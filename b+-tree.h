@@ -24,7 +24,7 @@ class bpt_node
 		bpt_node ins(int d);
 		bpt_node del(int d);
 		void print(bpt_node top_node);
-}
+};
 
 
 
