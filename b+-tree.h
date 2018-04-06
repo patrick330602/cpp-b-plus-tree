@@ -14,11 +14,11 @@ class bpt_node
 		bpt_node(bool l, int d, bpt_node *f, bpt_node *n, bpt_node *p);
 		~bpt_node();
 
-		bpt_node GetNext();
-		bpt_node GetPrev();
-		bpt_node GetRoot();
-		bool IsLeaf();
-		int GetValue();
+		bpt_node GetNext(){return *next_node;}
+		bpt_node GetPrev(){return *prev_node;}
+		bpt_node GetRoot(){return *root_node;}
+		bool IsLeaf(){return leaf;}
+		int GetValue(){return num;}
 
 		bpt_node search(int d);
 		bpt_node ins(int d);
