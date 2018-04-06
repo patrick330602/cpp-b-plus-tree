@@ -10,8 +10,8 @@ class bpt_node
 		bpt_node *next_node;
 		bpt_node *prev_node;
 	public:
-		bpt_node();
-		bpt_node(bool l, int d, bpt_node *f, bpt_node *n, bpt_node *p);
+		bpt_node():num(NULL), leaf(NULL), root_node(NULL), next_node(NULL), prev_node(NULL) {}
+		bpt_node(bool l, int d, bpt_node *f, bpt_node *n, bpt_node *p):leaf(l),	num(d), root_node(f),next_node(n), prev_node(p) {}
 		~bpt_node();
 
 		bpt_node GetNext(){return *next_node;}
