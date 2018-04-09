@@ -1,31 +1,11 @@
-//
-//  BPlusTree.cpp
-//  BPlusTree.2a
-//
-//  Created by Amittai Aviram on 6/12/16.
-//  Copyright © 2016 Amittai Aviram. All rights reserved.
-//
-//  Licensed under the Apache License, Version 2.0 (the "License");
-//  you may not use this file except in compliance with the License.
-//  You may obtain a copy of the License at
-//
-//  http://www.apache.org/licenses/LICENSE-2.0
-//
-//  Unless required by applicable law or agreed to in writing, software
-//  distributed under the License is distributed on an "AS IS" BASIS,
-//  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-//  See the License for the specific language governing permissions and
-//  limitations under the License.
-
-
 #include <iostream>
 #include <fstream>
 #include <string>
 #include "BPlusTree.h"
-#include "Exceptions.h"
 #include "InternalNode.h"
 #include "LeafNode.h"
 #include "Node.h"
+using namespace std;
 
 BPlusTree::BPlusTree(int aOrder) : fOrder{aOrder}, fRoot{nullptr} {}
 
@@ -55,7 +35,8 @@ void BPlusTree::insertIntoLeaf(KeyType aKey, ValueType aValue)
 {
     LeafNode* leafNode = findLeafNode(aKey);
     if (!leafNode) {
-        throw LeafNotFoundException(aKey);
+        cout << "LeafNotFound: Aborted." << endl;
+		throw;
     }
     int newSize = leafNode->createAndInsertRecord(aKey, aValue);
     if (newSize > leafNode->maxSize()) {
@@ -144,7 +125,7 @@ template <typename N>
 void BPlusTree::coalesce(N* aNeighborNode, N* aNode, InternalNode* aParent, int aIndex)
 {
     if (aIndex == 0) {
-        std::swap(aNode, aNeighborNode);
+        swap(aNode, aNeighborNode);
         aIndex = 1;
     }
     aNode->moveAllTo(aNeighborNode, aIndex);
@@ -185,24 +166,24 @@ LeafNode* BPlusTree::findLeafNode(KeyType aKey, bool aPrinting, bool aVerbose)
 {
     if (isEmpty()) {
         if (aPrinting) {
-            std::cout << "Not found: empty tree." << std::endl;
+            cout << "Not found: empty tree." << endl;
         }
         return nullptr;
     }
     auto node = fRoot;
     if (aPrinting) {
-        std::cout << "Root: ";
+        cout << "Root: ";
         if (fRoot->isLeaf()) {
-            std::cout << "\t" << static_cast<LeafNode*>(fRoot)->toString(aVerbose);
+            cout << "\t" << static_cast<LeafNode*>(fRoot)->toString(aVerbose);
         } else {
-            std::cout << "\t" << static_cast<InternalNode*>(fRoot)->toString(aVerbose);
+            cout << "\t" << static_cast<InternalNode*>(fRoot)->toString(aVerbose);
         }
-        std::cout << std::endl;
+        cout << endl;
     }
     while (!node->isLeaf()) {
         auto internalNode = static_cast<InternalNode*>(node);
         if (aPrinting && node != fRoot) {
-            std::cout << "\tNode: " << internalNode->toString(aVerbose) << std::endl;
+            cout << "\tNode: " << internalNode->toString(aVerbose) << endl;
         }
         node = internalNode->lookup(aKey);
     }
@@ -240,23 +221,23 @@ void BPlusTree::printValue(KeyType aKey, bool aPrintPath, bool aVerbose)
 {
     LeafNode* leaf = findLeafNode(aKey, aPrintPath, aVerbose);
     if (!leaf) {
-        std::cout << "Leaf not found with key " << aKey << "." << std::endl;
+        cout << "Leaf not found with key " << aKey << "." << endl;
         return;
     }
     if (aPrintPath) {
-        std::cout << "\t";
+        cout << "\t";
     }
-    std::cout << "Leaf: " << leaf->toString(aVerbose) << std::endl;
+    cout << "Leaf: " << leaf->toString(aVerbose) << endl;
     Record* record = leaf->lookup(aKey);
     if (!record) {
-        std::cout << "Record not found with key " << aKey << "." << std::endl;
+        cout << "Record not found with key " << aKey << "." << endl;
         return;
     }
     if (aPrintPath) {
-        std::cout << "\t";
+        cout << "\t";
     }
-    std::cout << "Record found at location " << std::hex << record << std::dec << ":" << std::endl;
-    std::cout << "\tKey: " << aKey << "   Value: " << record->value() << std::endl;
+    cout << "Record found at location " << hex << record << dec << ":" << endl;
+    cout << "\tKey: " << aKey << "   Value: " << record->value() << endl;
 }
 
 void BPlusTree::printPathTo(KeyType aKey, bool aVerbose)
@@ -268,17 +249,17 @@ void BPlusTree::printRange(KeyType aStart, KeyType aEnd)
 {
     auto rangeVector = range(aStart, aEnd);
     for (auto entry : rangeVector) {
-        std::cout << "Key: " << std::get<0>(entry);
-        std::cout << "    Value: " << std::get<1>(entry);
-        std::cout << "    Leaf: " << std::hex << std::get<2>(entry) << std::dec << std::endl;
+        cout << "Key: " << get<0>(entry);
+        cout << "    Value: " << get<1>(entry);
+        cout << "    Leaf: " << hex << get<2>(entry) << dec << endl;
     }
 }
 
-std::vector<BPlusTree::EntryType> BPlusTree::range(KeyType aStart, KeyType aEnd)
+vector<BPlusTree::EntryType> BPlusTree::range(KeyType aStart, KeyType aEnd)
 {
     auto startLeaf = findLeafNode(aStart);
     auto endLeaf = findLeafNode(aEnd);
-    std::vector<std::tuple<KeyType, ValueType, LeafNode*>> entries;
+    vector<tuple<KeyType, ValueType, LeafNode*>> entries;
     if (!startLeaf || !endLeaf) {
         return entries;
     }
