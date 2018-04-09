@@ -1,9 +1,7 @@
-#include <iostream>
 #include "InternalNode.h"
 #include "LeafNode.h"
 #include "Node.h"
 #include "Printer.h"
-using namespace std;
 
 Printer::Printer() : fVerbose(false) {}
 

@@ -1,9 +1,11 @@
 #pragma once
 
+#include <iostream>
 #include <tuple>
 #include <vector>
 #include "Definitions.h"
 #include "Printer.h"
+using namespace std;
 
 class InternalNode;
 class LeafNode;
@@ -22,7 +24,7 @@ public:
     /// The type used in the API for inserting a new key-value pair
     /// into the tree.  The third item is the type of the Node into
     /// which the key will be inserted.
-    using EntryType = std::tuple<KeyType, ValueType, LeafNode*>;
+    using EntryType = tuple<KeyType, ValueType, LeafNode*>;
     
     /// Returns true if this B+ tree has no keys or values.
     bool isEmpty() const;
@@ -71,7 +73,7 @@ private:
     void adjustRoot();
     LeafNode* findLeafNode(KeyType aKey, bool aPrinting = false, bool aVerbose = false);
     void printValue(KeyType aKey, bool aPrintPath, bool aVerbose);
-    std::vector<EntryType> range(KeyType aStart, KeyType aEnd);
+    vector<EntryType> range(KeyType aStart, KeyType aEnd);
     const int fOrder;
     Node* fRoot;
     Printer fPrinter;

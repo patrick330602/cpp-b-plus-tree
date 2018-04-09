@@ -1,9 +1,11 @@
 #pragma once
 
+#include <iostream>
 #include <queue>
 #include <vector>
 #include "Definitions.h"
 #include "Node.h"
+using namespace std;
 
 class InternalNode : public Node
 {
@@ -11,7 +13,7 @@ public:
     explicit InternalNode(int aOrder);
     explicit InternalNode(int aOrder, Node* aParent);
     ~InternalNode() override;
-    using MappingType = std::pair<KeyType, Node*>;
+    using MappingType = pair<KeyType, Node*>;
     bool isLeaf() const override;
     int size() const override;
     int minSize() const override;
@@ -31,12 +33,12 @@ public:
     Node* lookup(KeyType aKey) const;
     int nodeIndex(Node* aNode) const;
     Node* neighbor(int aIndex) const;
-    std::string toString(bool aVerbose = false) const override;
-    void queueUpChildren(std::queue<Node*>* aQueue);
+    string toString(bool aVerbose = false) const override;
+    void queueUpChildren(queue<Node*>* aQueue);
 private:
-    void copyHalfFrom(std::vector<MappingType>& aMappings);
-    void copyAllFrom(std::vector<MappingType>& aMappings);
+    void copyHalfFrom(vector<MappingType>& aMappings);
+    void copyAllFrom(vector<MappingType>& aMappings);
     void copyLastFrom(MappingType aPair);
     void copyFirstFrom(MappingType aPair, int aParentIndex);
-    std::vector<MappingType> fMappings;
+    vector<MappingType> fMappings;
 };

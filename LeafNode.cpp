@@ -1,8 +1,6 @@
-#include <iostream>
 #include <sstream>
 #include "InternalNode.h"
 #include "LeafNode.h"
-using namespace std;
 
 LeafNode::LeafNode(int aOrder) : fNext{nullptr}, Node(aOrder) {}
 

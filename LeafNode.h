@@ -1,10 +1,12 @@
 #pragma once
 
+#include <iostream>
 #include <tuple>
 #include <utility>
 #include <vector>
 #include "Node.h"
 #include "Record.h"
+using namespace std;
 
 class LeafNode : public Node
 {
@@ -12,8 +14,8 @@ public:
     explicit LeafNode(int aOrder);
     explicit LeafNode(int aOrder, Node* aParent);
     ~LeafNode() override;
-    using MappingType = std::pair<KeyType, Record*>;
-    using EntryType = std::tuple<KeyType, ValueType, LeafNode*>;
+    using MappingType = pair<KeyType, Record*>;
+    using EntryType = tuple<KeyType, ValueType, LeafNode*>;
     bool isLeaf() const override;
     LeafNode* next() const;
     void setNext(LeafNode* aNext);
@@ -29,15 +31,15 @@ public:
     void moveAllTo(LeafNode* aRecipient, int /* Unused */);
     void moveFirstToEndOf(LeafNode* aRecipient);
     void moveLastToFrontOf(LeafNode* aRecipient, int aParentIndex);
-    void copyRangeStartingFrom(KeyType aKey, std::vector<EntryType>& aVector);
-    void copyRangeUntil(KeyType aKey, std::vector<EntryType>& aVector);
-    void copyRange(std::vector<EntryType>& aVector);
-    std::string toString(bool aVerbose = false) const override;
+    void copyRangeStartingFrom(KeyType aKey, vector<EntryType>& aVector);
+    void copyRangeUntil(KeyType aKey, vector<EntryType>& aVector);
+    void copyRange(vector<EntryType>& aVector);
+    string toString(bool aVerbose = false) const override;
 private:
-    void copyHalfFrom(std::vector<MappingType>& aMappings);
-    void copyAllFrom(std::vector<MappingType>& aMappings);
+    void copyHalfFrom(vector<MappingType>& aMappings);
+    void copyAllFrom(vector<MappingType>& aMappings);
     void copyLastFrom(MappingType aPair);
     void copyFirstFrom(MappingType aPair, int aParentIndex);
-    std::vector<MappingType> fMappings;
+    vector<MappingType> fMappings;
     LeafNode* fNext;
 };

@@ -2,7 +2,6 @@
 #include <sstream>
 #include "Definitions.h"
 #include "Record.h"
-using namespace std;
 
 Record::Record(ValueType aValue)
 : fValue(aValue)

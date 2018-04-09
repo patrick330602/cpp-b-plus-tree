@@ -1,6 +1,8 @@
 #pragma once
 
+#include <iostream>
 #include <queue>
+using namespace std;
 
 class Node;
 
@@ -15,6 +17,6 @@ public:
 private:
     void printEmptyTree() const;
     void printNonEmptyTree(Node* aRoot) const;
-    void printCurrentRank(std::queue<Node*>* aCurrentRank, std::queue<Node*>* aNextRank) const;
+    void printCurrentRank(queue<Node*>* aCurrentRank, queue<Node*>* aNextRank) const;
     bool fVerbose;
 };

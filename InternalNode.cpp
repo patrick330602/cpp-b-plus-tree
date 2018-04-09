@@ -1,7 +1,5 @@
-#include <iostream>
 #include <sstream>
 #include "InternalNode.h"
-using namespace std;
 
 InternalNode::InternalNode(int aOrder) : Node(aOrder) {}
 
