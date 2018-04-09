@@ -1,6 +1,8 @@
+#include <iostream>
 #include <sstream>
 #include "InternalNode.h"
 #include "LeafNode.h"
+using namespace std;
 
 LeafNode::LeafNode(int aOrder) : fNext{nullptr}, Node(aOrder) {}
 
@@ -43,11 +45,11 @@ int LeafNode::maxSize() const
     return order() - 1;
 }
 
-std::string LeafNode::toString(bool aVerbose) const
+string LeafNode::toString(bool aVerbose) const
 {
-    std::ostringstream keyToTextConverter;
+    ostringstream keyToTextConverter;
     if (aVerbose) {
-        keyToTextConverter << "[" << std::hex << this << std::dec << "]<" << fMappings.size() << "> ";
+        keyToTextConverter << "[" << hex << this << dec << "]<" << fMappings.size() << "> ";
     }
     bool first = true;
     for (auto mapping : fMappings) {
@@ -59,7 +61,7 @@ std::string LeafNode::toString(bool aVerbose) const
         keyToTextConverter << mapping.first;
     }
     if (aVerbose) {
-        keyToTextConverter << "[" << std::hex << fNext << ">";
+        keyToTextConverter << "[" << hex << fNext << ">";
     }
     return keyToTextConverter.str();
 }
@@ -94,7 +96,7 @@ Record* LeafNode::lookup(KeyType aKey) const
     return nullptr;
 }
 
-void LeafNode::copyRangeStartingFrom(KeyType aKey, std::vector<EntryType>& aVector)
+void LeafNode::copyRangeStartingFrom(KeyType aKey, vector<EntryType>& aVector)
 {
     bool found = false;
     for (auto mapping : fMappings) {
@@ -102,17 +104,17 @@ void LeafNode::copyRangeStartingFrom(KeyType aKey, std::vector<EntryType>& aVect
             found = true;
         }
         if (found) {
-            aVector.push_back(std::make_tuple(mapping.first, mapping.second->value(), this));
+            aVector.push_back(make_tuple(mapping.first, mapping.second->value(), this));
         }
     }
 }
 
-void LeafNode::copyRangeUntil(KeyType aKey, std::vector<EntryType>& aVector)
+void LeafNode::copyRangeUntil(KeyType aKey, vector<EntryType>& aVector)
 {
     bool found = false;
     for (auto mapping : fMappings) {
         if (!found) {
-            aVector.push_back(std::make_tuple(mapping.first, mapping.second->value(), this));
+            aVector.push_back(make_tuple(mapping.first, mapping.second->value(), this));
         }
         if (mapping.first == aKey) {
             found = true;
@@ -120,10 +122,10 @@ void LeafNode::copyRangeUntil(KeyType aKey, std::vector<EntryType>& aVector)
     }
 }
 
-void LeafNode::copyRange(std::vector<EntryType>& aVector)
+void LeafNode::copyRange(vector<EntryType>& aVector)
 {
     for (auto mapping : fMappings) {
-        aVector.push_back(std::make_tuple(mapping.first, mapping.second->value(), this));
+        aVector.push_back(make_tuple(mapping.first, mapping.second->value(), this));
     }
 }
 
@@ -136,7 +138,8 @@ int LeafNode::removeAndDeleteRecord(KeyType aKey)
         ++removalPoint;
     }
     if (removalPoint == end) {
-        throw RecordNotFoundException(aKey);
+		cout << "RecordNotFound: " << aKey << endl;
+        throw;
     }
     auto record = *removalPoint;
     fMappings.erase(removalPoint);
@@ -158,7 +161,7 @@ void LeafNode::moveHalfTo(LeafNode *aRecipient)
     }
 }
 
-void LeafNode::copyHalfFrom(std::vector<std::pair<KeyType, Record*> > &aMappings)
+void LeafNode::copyHalfFrom(vector<pair<KeyType, Record*> > &aMappings)
 {
     for (size_t i = minSize(); i < aMappings.size(); ++i) {
         fMappings.push_back(aMappings[i]);
@@ -172,7 +175,7 @@ void LeafNode::moveAllTo(LeafNode *aRecipient, int)
     aRecipient->setNext(next());
 }
 
-void LeafNode::copyAllFrom(std::vector<std::pair<KeyType, Record*> > &aMappings)
+void LeafNode::copyAllFrom(vector<pair<KeyType, Record*> > &aMappings)
 {
     for (auto mapping : aMappings) {
         fMappings.push_back(mapping);

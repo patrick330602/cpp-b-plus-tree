@@ -35,7 +35,7 @@ void BPlusTree::insertIntoLeaf(KeyType aKey, ValueType aValue)
 {
     LeafNode* leafNode = findLeafNode(aKey);
     if (!leafNode) {
-        cout << "LeafNotFound: Aborted." << endl;
+        cout << "LeafNotFound: " << aKey << endl;
 		throw;
     }
     int newSize = leafNode->createAndInsertRecord(aKey, aValue);

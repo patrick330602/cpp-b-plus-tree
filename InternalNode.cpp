@@ -1,6 +1,7 @@
 #include <iostream>
 #include <sstream>
 #include "InternalNode.h"
+using namespace std;
 
 InternalNode::InternalNode(int aOrder) : Node(aOrder) {}
 
@@ -54,15 +55,15 @@ Node* InternalNode::firstChild() const
 
 void InternalNode::populateNewRoot(Node *aOldNode, KeyType aNewKey, Node *aNewNode)
 {
-    fMappings.push_back(std::make_pair(DUMMY_KEY, aOldNode));
-    fMappings.push_back(std::make_pair(aNewKey, aNewNode));
+    fMappings.push_back(make_pair(DUMMY_KEY, aOldNode));
+    fMappings.push_back(make_pair(aNewKey, aNewNode));
 }
 
 int InternalNode::insertNodeAfter(Node *aOldNode, KeyType aNewKey, Node *aNewNode)
 {
     auto iter = fMappings.begin();
     for (; iter != fMappings.end() && iter->second != aOldNode; ++iter);
-    fMappings.insert(iter + 1, std::make_pair(aNewKey, aNewNode));
+    fMappings.insert(iter + 1, make_pair(aNewKey, aNewNode));
     return size();
 }
 
@@ -94,7 +95,7 @@ void InternalNode::moveHalfTo(InternalNode *aRecipient)
     }
 }
 
-void InternalNode::copyHalfFrom(std::vector<MappingType> &aMappings)
+void InternalNode::copyHalfFrom(vector<MappingType> &aMappings)
 {
     for (size_t i = minSize(); i < aMappings.size(); ++i) {
         aMappings[i].second->setParent(this);
@@ -109,7 +110,7 @@ void InternalNode::moveAllTo(InternalNode *aRecipient, int aIndexInParent)
     fMappings.clear();
 }
 
-void InternalNode::copyAllFrom(std::vector<MappingType> &aMappings)
+void InternalNode::copyAllFrom(vector<MappingType> &aMappings)
 {
     for (auto mapping : aMappings) {
         mapping.second->setParent(this);
@@ -165,7 +166,8 @@ int InternalNode::nodeIndex(Node *aNode) const
             return static_cast<int>(i);
         }
     }
-    throw NodeNotFoundException(aNode->toString(), toString());
+	cout << "NodeNotFound: {" << aNode->toString() << ": " << toString() << "}" << endl;
+    throw;
 }
 
 Node* InternalNode::neighbor(int aIndex) const
@@ -173,14 +175,14 @@ Node* InternalNode::neighbor(int aIndex) const
     return fMappings[aIndex].second;
 }
 
-std::string InternalNode::toString(bool aVerbose) const
+string InternalNode::toString(bool aVerbose) const
 {
     if (fMappings.empty()) {
         return "";
     }
-    std::ostringstream keyToTextConverter;
+    ostringstream keyToTextConverter;
     if (aVerbose) {
-        keyToTextConverter << "[" << std::hex << this << std::dec << "]<" << fMappings.size() << "> ";
+        keyToTextConverter << "[" << hex << this << dec << "]<" << fMappings.size() << "> ";
     }
     auto entry = aVerbose ? fMappings.begin() : fMappings.begin() + 1;
     auto end = fMappings.end();
@@ -191,16 +193,16 @@ std::string InternalNode::toString(bool aVerbose) const
         } else {
             keyToTextConverter << " ";
         }
-        keyToTextConverter << std::dec << entry->first;
+        keyToTextConverter << dec << entry->first;
         if (aVerbose) {
-            keyToTextConverter << "(" << std::hex << entry->second << std::dec << ")";
+            keyToTextConverter << "(" << hex << entry->second << dec << ")";
         }
         ++entry;
     }
     return keyToTextConverter.str();
 }
 
-void InternalNode::queueUpChildren(std::queue<Node *>* aQueue)
+void InternalNode::queueUpChildren(queue<Node *>* aQueue)
 {
     for (auto mapping : fMappings) {
         aQueue->push(mapping.second);
