@@ -23,3 +23,12 @@ bpt_node* bpt_node::search(int d){
 		return this;
 	}
 }
+
+void bpt_node::ins(int d){
+	if(!this->search(d)){
+		
+	}
+	else{
+		cout << "already inseted. abort." << endl;
+	}
+}

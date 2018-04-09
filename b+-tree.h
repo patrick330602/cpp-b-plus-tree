@@ -21,9 +21,9 @@ class bpt_node
 		int GetValue(){return num;}
 
 		bpt_node* search(int d);
-		bpt_node ins(int d);
-		bpt_node del(int d);
-		void print(bpt_node top_node);
+		void ins(int d);
+		void del(int d);
+		void print(bpt_node top_node) const;
 };
 
 

@@ -1,12 +1,13 @@
 #include "b+-tree.h"
 #include <iostream>
+#include <stdio.h>
 using namespace std;
 
 int main(){
 	int i=0;
 	int opt=0;
 	string a,b,c;
-	cout << "Please initialize the tree(N for empty):"<< endl;
+	cout << "Please initialize the tree, Ctrl-D to end:"<< endl;
 	cin >> a >> b >> c;
 	cout << "the initial b+-tree will be:" << endl
 	     << a << " " << b << " " << c << endl << endl
