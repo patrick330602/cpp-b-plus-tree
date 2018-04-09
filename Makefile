@@ -1,6 +1,6 @@
 TARGET=$(shell basename $(PWD))
 create:
-	g++ -g -o $(TARGET) *.cpp *.h
+	g++ -g -Wall -std=c++11 -o $(TARGET) *.cpp *.h
 
 clean:
 	/bin/rm -f $(TARGET)
