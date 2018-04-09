@@ -9,6 +9,7 @@ string introMessage() {
     oss << "B+ Tree of Order 4" << endl;
 	oss << "By Dhaval, Jinming, and Tim" << endl;
     oss << "-------------------" << endl;
+	oss << "Here, we will initial the B+ Tree." << endl;
     return oss.str();
 }
 
@@ -17,7 +18,6 @@ string usageMessage() {
     "Commands\n"
 	"------------------------------------------------------------------\n"
     "i -- Insert an integer i where i >= 0.\n"
-    "f -- Find the value under key.\n"
     "d -- Delete key and its associated value.\n"
     "r -- Destroy the whole tree.\n"
     "p -- Print the B+ tree.\n"
@@ -29,9 +29,21 @@ string usageMessage() {
 int main(int argc, const char * argv[]) {
     char instruction;
     int key = 0;
+	int num_val = 0;
     bool quit = false;
     cout << introMessage();
     BPlusTree tree(4);
+	cout << "Please input number of the values you want to input: ";
+	cin >> num_val;
+	cout << "Please input values, seperated by space: " << endl;
+	while(num_val){
+		cin >> key;
+		tree.insert(key,key);
+		num_val--;
+	}
+	cout << "Initialized. Printing current tree..." << endl;
+	tree.print(false);
+	cout << "Entering interactive prompt..." << endl;
     while (!quit)
     {
         cout << "> ";
@@ -47,15 +59,11 @@ int main(int argc, const char * argv[]) {
 				cout << "[INSERT]> ";
                 cin >> key;
                 if (key < 0) {
-                    cout << usageMessage();
+                    cout << "Invalid input.";
+					break;
                 }
                 tree.insert(key, key);
                 tree.print(false);
-                break;
-            case 'f':
-				cout << "[FIND]> ";
-                cin >> key;
-                tree.printValue(key);
                 break;
             case 'q':
                 quit = true;

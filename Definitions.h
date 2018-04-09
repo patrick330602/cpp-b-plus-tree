@@ -1,5 +1,9 @@
 #pragma once
+
 #include <cstdlib>
+
+#define VERSION "2.0.2"
+
 const int DEFAULT_ORDER{4};
 
 // Minimum order is necessarily 3.  We set the maximum

@@ -3,14 +3,11 @@ ARGS=-std=c++11
 
 all : bptree
 
-bptree : BPlusTree.o Exceptions.o InternalNode.o LeafNode.o Node.o Printer.o Record.o main.o
+bptree : BPlusTree.o InternalNode.o LeafNode.o Node.o Printer.o Record.o main.o
 	$(CC) $(ARGS) $^ -o $@
 	rm *.o
 
 BPlusTree.o	: BPlusTree.cpp BPlusTree.h Definitions.h
-	$(CC) $(ARGS) -c $<
-
-Exceptions.o : Exceptions.cpp Exceptions.h Definitions.h
 	$(CC) $(ARGS) -c $<
 
 InternalNode.o : InternalNode.cpp InternalNode.h Definitions.h
