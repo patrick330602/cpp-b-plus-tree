@@ -209,16 +209,6 @@ LeafNode* BPlusTree::findLeafNode(KeyType aKey, bool aPrinting, bool aVerbose)
     return static_cast<LeafNode*>(node);
 }
 
-void BPlusTree::readInputFromFile(std::string aFileName)
-{
-    int key;
-    std::ifstream input(aFileName);
-    while (input) {
-        input >> key;
-        insert(key, key);
-    }
-}
-
 void BPlusTree::print(bool aVerbose)
 {
     fPrinter.setVerbose(aVerbose);

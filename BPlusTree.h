@@ -78,12 +78,6 @@ public:
     /// Remove all elements from the B+ tree. You can then build
     /// it up again by inserting new elements into it.
     void destroyTree();
-    
-    /// Read elements to be inserted into the B+ tree from a text file.
-    /// Each new element should consist of a single integer on a line by itself.
-    /// This B+ tree treats each such input as both a new value and the key
-    /// under which to store it.
-    void readInputFromFile(std::string aFileName);
 private:
     void startNewTree(KeyType aKey, ValueType aValue);
     void insertIntoLeaf(KeyType aKey, ValueType aValue);
