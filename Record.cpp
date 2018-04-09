@@ -21,6 +21,7 @@
 #include <sstream>
 #include "Definitions.h"
 #include "Record.h"
+using namespace std;
 
 Record::Record(ValueType aValue)
 : fValue(aValue)
@@ -31,9 +32,9 @@ ValueType Record::value() const
     return fValue;
 }
 
-std::string Record::toString() const
+string Record::toString() const
 {
-    std::ostringstream oss;
+    ostringstream oss;
     oss << fValue;
     return oss.str();
 }
