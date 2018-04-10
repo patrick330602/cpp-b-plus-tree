@@ -4,7 +4,6 @@
 #include "InternalNode.h"
 #include "LeafNode.h"
 #include "Node.h"
-using namespace std;
 
 BPlusTree::BPlusTree(int aOrder) : fOrder{aOrder}, fRoot{nullptr} {}
 
@@ -13,7 +12,7 @@ bool BPlusTree::isEmpty() const
     return !fRoot;
 }
 
-// INSERTION
+/*-- Insertion --*/
 
 void BPlusTree::insert(KeyType aKey, ValueType aValue)
 {
@@ -40,9 +39,10 @@ void BPlusTree::insertIntoLeaf(KeyType aKey, ValueType aValue)
     int newSize = leafNode->createAndInsertRecord(aKey, aValue);
     if (newSize > leafNode->maxSize()) {
         LeafNode* newLeaf = split(leafNode);
+		KeyType newKey = leafNode->lastKey();
         newLeaf->setNext(leafNode->next());
         leafNode->setNext(newLeaf);
-        KeyType newKey = newLeaf->firstKey();
+        //KeyType newKey = newLeaf->firstKey();
         insertIntoParent(leafNode, newKey, newLeaf);
     }
 }
@@ -74,9 +74,7 @@ T* BPlusTree::split(T* aNode)
     return newNode;
 }
 
-
-// REMOVAL
-
+/*-- Deletion --*/
 
 void BPlusTree::remove(KeyType aKey)
 {
@@ -158,14 +156,13 @@ void BPlusTree::adjustRoot()
     }
 }
 
+/*-- Other functions --*/
 
-// UTILITIES AND PRINTING
-
-LeafNode* BPlusTree::findLeafNode(KeyType aKey, bool aPrinting, bool aVerbose)
+LeafNode* BPlusTree::findLeafNode(KeyType aKey, bool aPrinting)
 {
     if (isEmpty()) {
         if (aPrinting) {
-            cout << "Not found: empty tree." << endl;
+            cout << "Not found: empty tree.\n";
         }
         return nullptr;
     }
@@ -173,25 +170,24 @@ LeafNode* BPlusTree::findLeafNode(KeyType aKey, bool aPrinting, bool aVerbose)
     if (aPrinting) {
         cout << "Root: ";
         if (fRoot->isLeaf()) {
-            cout << "\t" << static_cast<LeafNode*>(fRoot)->toString(aVerbose);
+            cout << "\t" << static_cast<LeafNode*>(fRoot)->toString();
         } else {
-            cout << "\t" << static_cast<InternalNode*>(fRoot)->toString(aVerbose);
+            cout << "\t" << static_cast<InternalNode*>(fRoot)->toString();
         }
         cout << endl;
     }
     while (!node->isLeaf()) {
         auto internalNode = static_cast<InternalNode*>(node);
         if (aPrinting && node != fRoot) {
-            cout << "\tNode: " << internalNode->toString(aVerbose) << endl;
+            cout << "\tNode: " << internalNode->toString() << endl;
         }
         node = internalNode->lookup(aKey);
     }
     return static_cast<LeafNode*>(node);
 }
 
-void BPlusTree::print(bool aVerbose)
+void BPlusTree::print()
 {
-    fPrinter.setVerbose(aVerbose);
     fPrinter.printTree(fRoot);
 }
 

@@ -27,14 +27,12 @@ public:
     Record* lookup(KeyType aKey) const;
     int removeAndDeleteRecord(KeyType aKey);
     KeyType firstKey() const;
+	KeyType lastKey() const;
     void moveHalfTo(LeafNode* aRecipient);
     void moveAllTo(LeafNode* aRecipient, int /* Unused */);
     void moveFirstToEndOf(LeafNode* aRecipient);
     void moveLastToFrontOf(LeafNode* aRecipient, int aParentIndex);
-    void copyRangeStartingFrom(KeyType aKey, vector<EntryType>& aVector);
-    void copyRangeUntil(KeyType aKey, vector<EntryType>& aVector);
-    void copyRange(vector<EntryType>& aVector);
-    string toString(bool aVerbose = false) const override;
+    string toString() const override;
 private:
     void copyHalfFrom(vector<MappingType>& aMappings);
     void copyAllFrom(vector<MappingType>& aMappings);

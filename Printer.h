@@ -10,12 +10,9 @@ class Printer
 {
 public:
     Printer();
-    bool verbose() const;
-    void setVerbose(bool aVerbose);
     void printTree(Node* aRoot) const;
 private:
     void printEmptyTree() const;
     void printNormalTree(Node* aRoot) const;
     void printCurrentRank(queue<Node*>* aCurrentRank, queue<Node*>* aNextRank) const;
-    bool fVerbose;
 };

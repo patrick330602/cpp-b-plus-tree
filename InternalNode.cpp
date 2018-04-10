@@ -164,7 +164,7 @@ int InternalNode::nodeIndex(Node *aNode) const
             return static_cast<int>(i);
         }
     }
-	cout << "NodeNotFound: {" << aNode->toString() << ": " << toString() << "}" << endl;
+	cout << "NodeNotFound: {" << aNode->toString() << ": " << toString() << "}\n";
     throw;
 }
 
@@ -173,16 +173,13 @@ Node* InternalNode::neighbor(int aIndex) const
     return fMappings[aIndex].second;
 }
 
-string InternalNode::toString(bool aVerbose) const
+string InternalNode::toString() const
 {
     if (fMappings.empty()) {
         return "";
     }
     ostringstream keyToTextConverter;
-    if (aVerbose) {
-        keyToTextConverter << "[" << hex << this << dec << "]<" << fMappings.size() << "> ";
-    }
-    auto entry = aVerbose ? fMappings.begin() : fMappings.begin() + 1;
+    auto entry = fMappings.begin() + 1;
     auto end = fMappings.end();
     bool first = true;
     while (entry != end) {
@@ -192,9 +189,6 @@ string InternalNode::toString(bool aVerbose) const
             keyToTextConverter << " ";
         }
         keyToTextConverter << dec << entry->first;
-        if (aVerbose) {
-            keyToTextConverter << "(" << hex << entry->second << dec << ")";
-        }
         ++entry;
     }
     return keyToTextConverter.str();

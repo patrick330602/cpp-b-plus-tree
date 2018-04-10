@@ -3,7 +3,7 @@
 #include <iostream>
 #include <queue>
 #include <vector>
-#include "Definitions.h"
+
 #include "Node.h"
 using namespace std;
 
@@ -33,7 +33,7 @@ public:
     Node* lookup(KeyType aKey) const;
     int nodeIndex(Node* aNode) const;
     Node* neighbor(int aIndex) const;
-    string toString(bool aVerbose = false) const override;
+    string toString() const override;
     void queueUpChildren(queue<Node*>* aQueue);
 private:
     void copyHalfFrom(vector<MappingType>& aMappings);

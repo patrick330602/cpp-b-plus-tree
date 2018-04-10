@@ -1,7 +1,9 @@
 #pragma once
 
 #include <string>
-#include "Definitions.h"
+
+using KeyType = int64_t;
+using ValueType = int64_t;
 using namespace std;
 
 // Key used where only the entry's pointer has meaning.
@@ -22,7 +24,7 @@ public:
     virtual int size() const = 0;
     virtual int minSize() const = 0;
     virtual int maxSize() const = 0;
-    virtual string toString(bool aVerbose = false) const = 0;
+    virtual string toString() const = 0;
 private:
     const int fOrder;
     Node* fParent;

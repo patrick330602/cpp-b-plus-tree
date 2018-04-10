@@ -1,6 +1,7 @@
 #pragma once
 
-#include "Definitions.h"
+using KeyType = int64_t;
+using ValueType = int64_t;
 using namespace std;
 
 class Record

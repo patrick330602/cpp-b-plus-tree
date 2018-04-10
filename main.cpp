@@ -1,51 +1,47 @@
 #include <iostream>
-#include <sstream>
-#include <ctime>
 #include "BPlusTree.h"
-#include "Definitions.h"
 using namespace std;
 
+
 string introMessage() {
-    ostringstream oss;
-    oss << "B+ Tree of Order 4" << endl;
-	oss << "By Dhaval, Jinming, and Tim" << endl;
-    oss << "-------------------" << endl;
-	oss << "Here, we will initial the B+ Tree." << endl;
-    return oss.str();
+    string message =
+    "B+ Tree of Order 4\n"
+	"By Dhaval Shah, Jinming Wu, and Tim Krato\n"
+    "-------------------\n";
+	return message;
 }
 
 string usageMessage() {
     string message =
     "Commands\n"
-	"------------------------------------------------------------------\n"
+	"------------------------------------------\n"
     "i -- Insert an integer i where i >= 0.\n"
     "d -- Delete key and its associated value.\n"
     "r -- Destroy the whole tree.\n"
-    "p -- Print the B+ tree.\n"
     "q -- Quit.\n"
-    "? -- Print this help message.\n\n";
+    "? -- Print help message.\n\n";
     return message;
 }
 
 int main() {
-	clock_t t;
     char instruction;
     int key = 0;
 	int num_val = 0;
     bool quit = false;
     cout << introMessage();
     BPlusTree tree(4);
-	cout << "Please input number of the values you want to input: ";
+	cout << "Here, we will initial the B+ Tree.\n\nPlease input number of the values you want to input: ";
 	cin >> num_val;
-	cout << "Please input values, seperated by space: " << endl;
+	cout << "Please input values, seperated by space: \n";
 	while(num_val){
 		cin >> key;
 		tree.insert(key,key);
 		num_val--;
 	}
-	cout << "Initialized. Printing current tree..." << endl;
-	tree.print(false);
-	cout << "Entering interactive prompt..." << endl;
+	cout << ":: Initialized. Printing current tree...\n\n";
+	tree.print();
+	cout << "\n:: Entering interactive prompt...\n\n";
+	cout << usageMessage();
     while (!quit)
     {
         cout << "> ";
@@ -54,11 +50,8 @@ int main() {
             case 'd':
 				cout << "[DELETE]> ";
                 cin >> key;
-				t = clock();
                 tree.remove(key);
-				t = clock() - t;
-				cout << "Deleted key " << key << " using " << (float)t/CLOCKS_PER_SEC << " second(s)." << endl;
-                tree.print(false);
+                tree.print();
                 break;
             case 'i':
 				cout << "[INSERT]> ";
@@ -67,17 +60,11 @@ int main() {
                     cout << "Invalid input.";
 					break;
                 }
-				t = clock();
                 tree.insert(key, key);
-				t = clock() - t;
-				cout << "Inserted key " << key << " using " << (float)t/CLOCKS_PER_SEC << " second(s)." << endl;
-                tree.print(false);
+                tree.print();
                 break;
             case 'q':
                 quit = true;
-                break;
-            case 'p':
-                tree.print(false);
                 break;
             case 'r':
                 tree.destroyTree();

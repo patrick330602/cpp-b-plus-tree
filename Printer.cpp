@@ -3,17 +3,8 @@
 #include "Node.h"
 #include "Printer.h"
 
-Printer::Printer() : fVerbose(false) {}
+Printer::Printer() {}
 
-bool Printer::verbose() const
-{
-    return fVerbose;
-}
-
-void Printer::setVerbose(bool aVerbose)
-{
-    fVerbose = aVerbose;
-}
 
 void Printer::printTree(Node *aRoot) const
 {
@@ -26,7 +17,7 @@ void Printer::printTree(Node *aRoot) const
 
 void Printer::printEmptyTree() const
 {
-    cout << "Empty tree." << endl;
+    cout << "Empty tree.\n";
 }
 
 void Printer::printNormalTree(Node *aRoot) const
@@ -49,7 +40,7 @@ void Printer::printCurrentRank(queue<Node*>* aCurrentRank, queue<Node*>* aNextRa
     cout << "|";
     while(!aCurrentRank->empty()) {
         Node* currentNode = aCurrentRank->front();
-        cout << " " << currentNode->toString(verbose());
+        cout << " " << currentNode->toString();
         cout << " |";
         if (!currentNode->isLeaf()) {
             auto internalNode = static_cast<InternalNode*>(currentNode);

@@ -6,25 +6,25 @@ all : bptree
 bptree : BPlusTree.o InternalNode.o LeafNode.o Node.o Printer.o Record.o main.o
 	$(CC) $(ARGS) $^ -o $@
 
-BPlusTree.o	: BPlusTree.cpp BPlusTree.h Definitions.h
+BPlusTree.o	: BPlusTree.cpp BPlusTree.h 
 	$(CC) $(ARGS) -c $<
 
-InternalNode.o : InternalNode.cpp InternalNode.h Definitions.h
+InternalNode.o : InternalNode.cpp InternalNode.h 
 	$(CC) $(ARGS) -c $<
 
-LeafNode.o : LeafNode.cpp LeafNode.h Definitions.h
+LeafNode.o : LeafNode.cpp LeafNode.h 
 	$(CC) $(ARGS) -c $<
 
-Node.o : Node.cpp Node.h Definitions.h
+Node.o : Node.cpp Node.h 
 	$(CC) $(ARGS) -c $<
 
-Printer.o : Printer.cpp Printer.h Definitions.h
+Printer.o : Printer.cpp Printer.h 
 	$(CC) $(ARGS) -c $<
 
-Record.o : Record.cpp Record.h Definitions.h
+Record.o : Record.cpp Record.h 
 	$(CC) $(ARGS) -c $<
 
-main.o : main.cpp Definitions.h 
+main.o : main.cpp  
 	$(CC) $(ARGS) -c $<
 
 clean :
