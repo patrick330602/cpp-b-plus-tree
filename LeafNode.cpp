@@ -154,14 +154,14 @@ void LeafNode::moveHalfTo(LeafNode *aRecipient)
 {
     aRecipient->copyHalfFrom(fMappings);
     size_t size = fMappings.size();
-    for (size_t i = minSize(); i < size; ++i) {
+    for (size_t i = minSize()+1; i < size; ++i) {
         fMappings.pop_back();
     }
 }
 
 void LeafNode::copyHalfFrom(vector<pair<KeyType, Record*> > &aMappings)
 {
-    for (size_t i = minSize(); i < aMappings.size(); ++i) {
+    for (size_t i = minSize()+1; i < aMappings.size(); ++i) {
         fMappings.push_back(aMappings[i]);
     }
 }

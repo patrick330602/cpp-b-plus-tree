@@ -88,14 +88,14 @@ void InternalNode::moveHalfTo(InternalNode *aRecipient)
 {
     aRecipient->copyHalfFrom(fMappings);
     size_t size = fMappings.size();
-    for (size_t i = minSize(); i < size; ++i) {
+    for (size_t i = minSize()+1; i < size; ++i) {
         fMappings.pop_back();
     }
 }
 
 void InternalNode::copyHalfFrom(vector<MappingType> &aMappings)
 {
-    for (size_t i = minSize(); i < aMappings.size(); ++i) {
+    for (size_t i = minSize()+1; i < aMappings.size(); ++i) {
         aMappings[i].second->setParent(this);
         fMappings.push_back(aMappings[i]);
     }

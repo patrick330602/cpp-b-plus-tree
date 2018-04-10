@@ -1,5 +1,5 @@
 CC=g++
-ARGS=-std=c++11
+ARGS=-std=c++11 -g
 
 all : bptree
 
