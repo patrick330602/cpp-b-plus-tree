@@ -5,7 +5,6 @@ all : bptree
 
 bptree : BPlusTree.o InternalNode.o LeafNode.o Node.o Printer.o Record.o main.o
 	$(CC) $(ARGS) $^ -o $@
-	rm *.o
 
 BPlusTree.o	: BPlusTree.cpp BPlusTree.h Definitions.h
 	$(CC) $(ARGS) -c $<

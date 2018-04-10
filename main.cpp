@@ -1,5 +1,6 @@
 #include <iostream>
 #include <sstream>
+#include <ctime>
 #include "BPlusTree.h"
 #include "Definitions.h"
 using namespace std;
@@ -26,7 +27,8 @@ string usageMessage() {
     return message;
 }
 
-int main(int argc, const char * argv[]) {
+int main() {
+	clock_t t;
     char instruction;
     int key = 0;
 	int num_val = 0;
@@ -52,7 +54,10 @@ int main(int argc, const char * argv[]) {
             case 'd':
 				cout << "[DELETE]> ";
                 cin >> key;
+				t = clock();
                 tree.remove(key);
+				t = clock() - t;
+				cout << "Deleted key " << key << " using " << (float)t/CLOCKS_PER_SEC << " second(s)." << endl;
                 tree.print(false);
                 break;
             case 'i':
@@ -62,7 +67,10 @@ int main(int argc, const char * argv[]) {
                     cout << "Invalid input.";
 					break;
                 }
+				t = clock();
                 tree.insert(key, key);
+				t = clock() - t;
+				cout << "Inserted key " << key << " using " << (float)t/CLOCKS_PER_SEC << " second(s)." << endl;
                 tree.print(false);
                 break;
             case 'q':
