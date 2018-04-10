@@ -195,12 +195,6 @@ void BPlusTree::print(bool aVerbose)
     fPrinter.printTree(fRoot);
 }
 
-void BPlusTree::printLeaves(bool aVerbose)
-{
-    fPrinter.setVerbose(aVerbose);
-    fPrinter.printLeaves(fRoot);
-}
-
 void BPlusTree::destroyTree()
 {
     if (fRoot->isLeaf()) {
@@ -211,63 +205,5 @@ void BPlusTree::destroyTree()
     fRoot = nullptr;
 }
 
-void BPlusTree::printValue(KeyType aKey, bool aVerbose)
-{
-    printValue(aKey, false, aVerbose);
-}
 
-void BPlusTree::printValue(KeyType aKey, bool aPrintPath, bool aVerbose)
-{
-    LeafNode* leaf = findLeafNode(aKey, aPrintPath, aVerbose);
-    if (!leaf) {
-        cout << "Leaf not found with key " << aKey << "." << endl;
-        return;
-    }
-    if (aPrintPath) {
-        cout << "\t";
-    }
-    cout << "Leaf: " << leaf->toString(aVerbose) << endl;
-    Record* record = leaf->lookup(aKey);
-    if (!record) {
-        cout << "Record not found with key " << aKey << "." << endl;
-        return;
-    }
-    if (aPrintPath) {
-        cout << "\t";
-    }
-    cout << "Record found at location " << hex << record << dec << ":" << endl;
-    cout << "\tKey: " << aKey << "   Value: " << record->value() << endl;
-}
 
-void BPlusTree::printPathTo(KeyType aKey, bool aVerbose)
-{
-    printValue(aKey, true, aVerbose);
-}
-
-void BPlusTree::printRange(KeyType aStart, KeyType aEnd)
-{
-    auto rangeVector = range(aStart, aEnd);
-    for (auto entry : rangeVector) {
-        cout << "Key: " << get<0>(entry);
-        cout << "    Value: " << get<1>(entry);
-        cout << "    Leaf: " << hex << get<2>(entry) << dec << endl;
-    }
-}
-
-vector<BPlusTree::EntryType> BPlusTree::range(KeyType aStart, KeyType aEnd)
-{
-    auto startLeaf = findLeafNode(aStart);
-    auto endLeaf = findLeafNode(aEnd);
-    vector<tuple<KeyType, ValueType, LeafNode*>> entries;
-    if (!startLeaf || !endLeaf) {
-        return entries;
-    }
-    startLeaf->copyRangeStartingFrom(aStart, entries);
-    startLeaf = startLeaf->next();
-    while (startLeaf != endLeaf) {
-        startLeaf->copyRange(entries);
-        startLeaf = startLeaf->next();
-    }
-    startLeaf->copyRangeUntil(aEnd, entries);
-    return entries;
-}

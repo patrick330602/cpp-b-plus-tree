@@ -13,10 +13,9 @@ public:
     bool verbose() const;
     void setVerbose(bool aVerbose);
     void printTree(Node* aRoot) const;
-    void printLeaves(Node* aRoot);
 private:
     void printEmptyTree() const;
-    void printNonEmptyTree(Node* aRoot) const;
+    void printNormalTree(Node* aRoot) const;
     void printCurrentRank(queue<Node*>* aCurrentRank, queue<Node*>* aNextRank) const;
     bool fVerbose;
 };

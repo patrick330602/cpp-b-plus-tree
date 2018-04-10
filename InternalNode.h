@@ -10,8 +10,8 @@ using namespace std;
 class InternalNode : public Node
 {
 public:
-    explicit InternalNode(int aOrder);
-    explicit InternalNode(int aOrder, Node* aParent);
+    explicit InternalNode(int Order);
+    explicit InternalNode(int Order, Node* Parent);
     ~InternalNode() override;
     using MappingType = pair<KeyType, Node*>;
     bool isLeaf() const override;

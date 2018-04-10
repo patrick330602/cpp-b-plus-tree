@@ -20,7 +20,7 @@ void Printer::printTree(Node *aRoot) const
     if (!aRoot) {
         printEmptyTree();
     } else {
-        printNonEmptyTree(aRoot);
+        printNormalTree(aRoot);
     }
 }
 
@@ -29,7 +29,7 @@ void Printer::printEmptyTree() const
     cout << "Empty tree." << endl;
 }
 
-void Printer::printNonEmptyTree(Node *aRoot) const
+void Printer::printNormalTree(Node *aRoot) const
 {
     queue<Node*> queue0;
     queue<Node*> queue1;
@@ -58,23 +58,4 @@ void Printer::printCurrentRank(queue<Node*>* aCurrentRank, queue<Node*>* aNextRa
         aCurrentRank->pop();
     }
     cout << endl;
-}
-
-void Printer::printLeaves(Node *aRoot)
-{
-    if (!aRoot) {
-        printEmptyTree();
-        return;
-    }
-    auto node = aRoot;
-    while (!node->isLeaf()) {
-        node = static_cast<InternalNode*>(node)->firstChild();
-    }
-    auto leafNode = static_cast<LeafNode*>(node);
-    while (leafNode) {
-        cout << "| ";
-        cout << leafNode->toString(fVerbose);
-        leafNode = leafNode->next();
-    }
-    cout << " |" << endl;
 }

@@ -1,9 +1,9 @@
 #include <sstream>
 #include "InternalNode.h"
 
-InternalNode::InternalNode(int aOrder) : Node(aOrder) {}
+InternalNode::InternalNode(int Order) : Node(Order) {}
 
-InternalNode::InternalNode(int aOrder, Node* aParent) : Node(aOrder, aParent) {}
+InternalNode::InternalNode(int Order, Node* Parent) : Node(Order, Parent) {}
 
 InternalNode::~InternalNode()
 {
