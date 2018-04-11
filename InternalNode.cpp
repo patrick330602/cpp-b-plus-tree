@@ -164,7 +164,7 @@ int InternalNode::nodeIndex(Node *aNode) const
             return static_cast<int>(i);
         }
     }
-	cout << "NodeNotFound: {" << aNode->toString() << ": " << toString() << "}\n";
+    cout << "NodeNotFound: {" << aNode->toString() << ": " << toString() << "}\n";
     throw;
 }
 

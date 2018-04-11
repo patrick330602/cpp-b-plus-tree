@@ -97,7 +97,7 @@ int LeafNode::removeAndDeleteRecord(KeyType aKey)
         ++removalPoint;
     }
     if (removalPoint == end) {
-		cout << "RecordNotFound: " << aKey << endl;
+        cout << "RecordNotFound: " << aKey << endl;
         throw;
     }
     auto record = *removalPoint;
@@ -113,7 +113,7 @@ KeyType LeafNode::firstKey() const
 
 KeyType LeafNode::lastKey() const
 {
-	return fMappings[fMappings.size()-1].first;
+    return fMappings[fMappings.size()-1].first;
 }
 
 void LeafNode::moveHalfTo(LeafNode *aRecipient)

@@ -27,7 +27,7 @@ public:
     Record* lookup(KeyType aKey) const;
     int removeAndDeleteRecord(KeyType aKey);
     KeyType firstKey() const;
-	KeyType lastKey() const;
+    KeyType lastKey() const;
     void moveHalfTo(LeafNode* aRecipient);
     void moveAllTo(LeafNode* aRecipient, int /* Unused */);
     void moveFirstToEndOf(LeafNode* aRecipient);

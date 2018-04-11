@@ -34,15 +34,14 @@ void BPlusTree::insertIntoLeaf(KeyType aKey, ValueType aValue)
     LeafNode* leafNode = findLeafNode(aKey);
     if (!leafNode) {
         cout << "LeafNotFound: " << aKey << endl;
-		throw;
+        throw;
     }
     int newSize = leafNode->createAndInsertRecord(aKey, aValue);
     if (newSize > leafNode->maxSize()) {
         LeafNode* newLeaf = split(leafNode);
-		KeyType newKey = leafNode->lastKey();
+        KeyType newKey = leafNode->lastKey();
         newLeaf->setNext(leafNode->next());
         leafNode->setNext(newLeaf);
-        //KeyType newKey = newLeaf->firstKey();
         insertIntoParent(leafNode, newKey, newLeaf);
     }
 }
