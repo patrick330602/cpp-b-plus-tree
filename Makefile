@@ -28,4 +28,4 @@ main.o: main.cpp
 	$(CC) $(ARGS) -c $<
 
 clean :
-	rm -f *.o bptree
+	rm -f *.o bptree bptree.exe 
