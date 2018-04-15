@@ -1,5 +1,7 @@
 #pragma once
 
+#include <string>
+#include <sstream>
 using KeyType = int64_t;
 using ValueType = int64_t;
 using namespace std;

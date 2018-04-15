@@ -2,8 +2,13 @@
 #include "Tree.h"
 using namespace std;
 
-string usage() {
-    string message =
+
+int main() {
+    char instruction;
+    int key = 0;
+    int num_val = 0;
+    bool quit = false;
+	string usage =
     "Commands\n"
     "------------------------------------------\n"
     "i -- Insert an integer i where i >= 0.\n"
@@ -11,14 +16,7 @@ string usage() {
     "r -- Destroy the whole tree.\n"
     "q -- Quit.\n"
     "? -- Print help message.\n\n";
-    return message;
-}
 
-int main() {
-    char instruction;
-    int key = 0;
-    int num_val = 0;
-    bool quit = false;
     cout << "B+ Tree of Order 4\n" 
 	     << "By Dhaval Shah, Jinming Wu, and Tim Krato\n"
 		 << "-------------------\n"
@@ -39,7 +37,7 @@ int main() {
     cout << "\n:: Initialized. Printing current tree...\n\n";
     tree.print();
     cout << "\n:: Entering interactive prompt...\n\n";
-    cout << usage();
+    cout << usage;
     while (!quit)
     {
         cout << "> ";
@@ -72,11 +70,11 @@ int main() {
                 tree.print();
                 break;
             case '?':
-                cout << usage();
+                cout << usage;
                 break;
             default:
                 cin.ignore(256, '\n');
-                cout << "invalid commands. \n\n" << usage();
+                cout << "invalid commands. \n\n" << usage;
                 break;
         }
     }
