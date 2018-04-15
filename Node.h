@@ -37,13 +37,13 @@ class Node
 	/// return whether the node is leaf, virtual
 	virtual bool isLeaf() const = 0;
 
-	/// return node size, virtual
+	/// return size of the node set, virtual
 	virtual int size() const = 0;
 
-	/// return minimum size of the node, virtual
+	/// return minimum size of the node set, virtual
 	virtual int minSize() const = 0;
 
-	///return maximum size of the node, virtual
+	///return maximum size of the node set, virtual
 	virtual int maxSize() const = 0;
 
 	///return the value in string format, virtual

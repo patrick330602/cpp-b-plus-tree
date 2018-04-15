@@ -2,170 +2,183 @@
 #include "InternalNode.h"
 #include "LeafNode.h"
 
-LeafNode::LeafNode(int aOrder) : fNext{nullptr}, Node(aOrder) {}
+LeafNode::LeafNode(int order) : Next{nullptr}, Node(order) {}
 
-LeafNode::LeafNode(int aOrder, Node* aParent) : fNext{nullptr}, Node(aOrder, aParent) {}
+LeafNode::LeafNode(int order, Node *parent) : Next{nullptr}, Node(order, parent) {}
 
 LeafNode::~LeafNode()
 {
-    for (auto mapping : fMappings) {
-        delete mapping.second;
-    }
+	for (auto mapping : Mappings)
+	{
+		delete mapping.second;
+	}
 }
 
 bool LeafNode::isLeaf() const
 {
-    return true;
+	return true;
 }
 
-LeafNode* LeafNode::next() const
+LeafNode *LeafNode::next() const
 {
-    return fNext;
+	return Next;
 }
 
-void LeafNode::setNext(LeafNode* aNext)
+void LeafNode::setNext(LeafNode *next)
 {
-    fNext = aNext;
+	Next = next;
 }
 
 int LeafNode::size() const
 {
-    return static_cast<int>(fMappings.size());
+	return static_cast<int>(Mappings.size());
 }
 
 int LeafNode::minSize() const
 {
-    return order()/2;
+	return order() / 2;
 }
 
 int LeafNode::maxSize() const
 {
-    return order() - 1;
+	return order() - 1;
 }
 
 string LeafNode::toString() const
 {
-    ostringstream keyToTextConverter;
-    bool first = true;
-    for (auto mapping : fMappings) {
-        if (first) {
-            first = false;
-        } else {
-            keyToTextConverter << " ";
-        }
-        keyToTextConverter << mapping.first;
-    }
-    return keyToTextConverter.str();
+	ostringstream keyToTextConverter;
+	bool first = true;
+	for (auto mapping : Mappings)
+	{
+		if (first)
+		{
+			first = false;
+		}
+		else
+		{
+			keyToTextConverter << " ";
+		}
+		keyToTextConverter << mapping.first;
+	}
+	return keyToTextConverter.str();
 }
 
-int LeafNode::createAndInsertRecord(KeyType aKey, ValueType aValue)
+int LeafNode::createAndInsertRecord(KeyType key, ValueType aValue)
 {
-    Record* existingRecord = lookup(aKey);
-    if (!existingRecord) {
-        Record* newRecord = new Record(aValue);
-        insert(aKey, newRecord);
-    }
-    return static_cast<int>(fMappings.size());
+	Record *existingRecord = lookup(key);
+	if (!existingRecord)
+	{
+		Record *newRecord = new Record(aValue);
+		insert(key, newRecord);
+	}
+	return static_cast<int>(Mappings.size());
 }
 
-void LeafNode::insert(KeyType aKey, Record* aRecord)
+void LeafNode::insert(KeyType key, Record *record)
 {
-    auto insertionPoint = fMappings.begin();
-    auto end = fMappings.end();
-    while (insertionPoint != end && insertionPoint->first < aKey) {
-        ++insertionPoint;
-    }
-    fMappings.insert(insertionPoint, MappingType(aKey, aRecord));
+	auto insertionPoint = Mappings.begin();
+	auto end = Mappings.end();
+	while (insertionPoint != end && insertionPoint->first < key)
+	{
+		++insertionPoint;
+	}
+	Mappings.insert(insertionPoint, MappingType(key, record));
 }
 
-Record* LeafNode::lookup(KeyType aKey) const
+Record *LeafNode::lookup(KeyType key) const
 {
-    for (auto mapping : fMappings) {
-        if (mapping.first == aKey) {
-            return mapping.second;
-        }
-    }
-    return nullptr;
+	for (auto mapping : Mappings)
+	{
+		if (mapping.first == key)
+		{
+			return mapping.second;
+		}
+	}
+	return nullptr;
 }
 
-
-int LeafNode::removeAndDeleteRecord(KeyType aKey)
+int LeafNode::removeAndDeleteRecord(KeyType key)
 {
-    auto removalPoint = fMappings.begin();
-    auto end = fMappings.end();
-    while (removalPoint != end && removalPoint->first != aKey) {
-        ++removalPoint;
-    }
-    if (removalPoint == end) {
-        cout << "RecordNotFound: " << aKey << endl;
-        throw;
-    }
-    auto record = *removalPoint;
-    fMappings.erase(removalPoint);
-    delete record.second;
-    return static_cast<int>(fMappings.size());
+	auto removalPoint = Mappings.begin();
+	auto end = Mappings.end();
+	while (removalPoint != end && removalPoint->first != key)
+	{
+		++removalPoint;
+	}
+	if (removalPoint == end)
+	{
+		cout << "RecordNotFound: " << key << endl;
+		throw;
+	}
+	auto record = *removalPoint;
+	Mappings.erase(removalPoint);
+	delete record.second;
+	return static_cast<int>(Mappings.size());
 }
 
 KeyType LeafNode::firstKey() const
 {
-    return fMappings[0].first;
+	return Mappings[0].first;
 }
 
 KeyType LeafNode::lastKey() const
 {
-    return fMappings[fMappings.size()-1].first;
+	return Mappings[Mappings.size() - 1].first;
 }
 
-void LeafNode::moveHalfTo(LeafNode *aRecipient)
+void LeafNode::moveHalfTo(LeafNode *recipient)
 {
-    aRecipient->copyHalfFrom(fMappings);
-    size_t size = fMappings.size();
-    for (size_t i = minSize()+1; i < size; ++i) {
-        fMappings.pop_back();
-    }
+	recipient->copyHalfFrom(Mappings);
+	size_t size = Mappings.size();
+	for (size_t i = minSize() + 1; i < size; ++i)
+	{
+		Mappings.pop_back();
+	}
 }
 
-void LeafNode::copyHalfFrom(vector<pair<KeyType, Record*> > &aMappings)
+void LeafNode::copyHalfFrom(vector<pair<KeyType, Record *>> &mappings)
 {
-    for (size_t i = minSize()+1; i < aMappings.size(); ++i) {
-        fMappings.push_back(aMappings[i]);
-    }
+	for (size_t i = minSize() + 1; i < mappings.size(); ++i)
+	{
+		Mappings.push_back(mappings[i]);
+	}
 }
 
-void LeafNode::moveAllTo(LeafNode *aRecipient, int)
+void LeafNode::moveAllTo(LeafNode *recipient, int)
 {
-    aRecipient->copyAllFrom(fMappings);
-    fMappings.clear();
-    aRecipient->setNext(next());
+	recipient->copyAllFrom(Mappings);
+	Mappings.clear();
+	recipient->setNext(next());
 }
 
-void LeafNode::copyAllFrom(vector<pair<KeyType, Record*> > &aMappings)
+void LeafNode::copyAllFrom(vector<pair<KeyType, Record *>> &mappings)
 {
-    for (auto mapping : aMappings) {
-        fMappings.push_back(mapping);
-    }
+	for (auto mapping : mappings)
+	{
+		Mappings.push_back(mapping);
+	}
 }
 
-void LeafNode::moveFirstToEndOf(LeafNode* aRecipient)
+void LeafNode::moveFirstToEndOf(LeafNode *recipient)
 {
-    aRecipient->copyLastFrom(fMappings.front());
-    fMappings.erase(fMappings.begin());
-    static_cast<InternalNode*>(parent())->setKeyAt(1, fMappings.front().first);
+	recipient->copyLastFrom(Mappings.front());
+	Mappings.erase(Mappings.begin());
+	static_cast<InternalNode *>(parent())->setKeyAt(1, Mappings.front().first);
 }
 
-void LeafNode::copyLastFrom(MappingType aPair)
+void LeafNode::copyLastFrom(MappingType Pair)
 {
-    fMappings.push_back(aPair);
+	Mappings.push_back(Pair);
 }
 
-void LeafNode::moveLastToFrontOf(LeafNode *aRecipient, int aParentIndex)
+void LeafNode::moveLastToFrontOf(LeafNode *recipient, int parentIndex)
 {
-    aRecipient->copyFirstFrom(fMappings.back(), aParentIndex);
-    fMappings.pop_back();
+	recipient->copyFirstFrom(Mappings.back(), parentIndex);
+	Mappings.pop_back();
 }
 
-void LeafNode::copyFirstFrom(MappingType aPair, int aParentIndex)
+void LeafNode::copyFirstFrom(MappingType Pair, int parentIndex)
 {
-    fMappings.insert(fMappings.begin(), aPair);
-    static_cast<InternalNode*>(parent())->setKeyAt(aParentIndex, fMappings.front().first);
+	Mappings.insert(Mappings.begin(), Pair);
+	static_cast<InternalNode *>(parent())->setKeyAt(parentIndex, Mappings.front().first);
 }
