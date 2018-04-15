@@ -3,18 +3,18 @@
 
 #include "Record.h"
 
-Record::Record(ValueType aValue)
-: fValue(aValue)
+Record::Record(ValueType value)
+: Value(value)
 {}
 
 ValueType Record::value() const
 {
-    return fValue;
+    return Value;
 }
 
 string Record::toString() const
 {
     ostringstream oss;
-    oss << fValue;
+    oss << Value;
     return oss.str();
 }
