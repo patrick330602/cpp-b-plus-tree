@@ -1,17 +1,8 @@
 #include <iostream>
-#include "BPlusTree.h"
+#include "Tree.h"
 using namespace std;
 
-
-string introMessage() {
-    string message =
-    "B+ Tree of Order 4\n"
-    "By Dhaval Shah, Jinming Wu, and Tim Krato\n"
-    "-------------------\n";
-    return message;
-}
-
-string usageMessage() {
+string usage() {
     string message =
     "Commands\n"
     "------------------------------------------\n"
@@ -28,20 +19,27 @@ int main() {
     int key = 0;
     int num_val = 0;
     bool quit = false;
-    cout << introMessage();
-    BPlusTree tree(4);
-    cout << "Here, we will initial the B+ Tree.\n\nPlease input number of the values you want to input: ";
+    cout << "B+ Tree of Order 4\n" 
+	     << "By Dhaval Shah, Jinming Wu, and Tim Krato\n"
+		 << "-------------------\n"
+		 << "This program will build B+ Tree interactively.\n"
+		 << "We assume that all input are unique. If the i-\n"
+		 << "-nput is not unique and found its existence in\n"
+		 << "the tree, operation will still be executed but\n"
+		 << "tree will not change.\n\n";
+    Tree tree(4);
+    cout << "Here, we will initial the B+ Tree.\n\nPlease input number of the values you want to input: \n> ";
     cin >> num_val;
-    cout << "Please input values, seperated by space: \n";
+    cout << "\nPlease input values, seperated by space: \n> ";
     while(num_val){
         cin >> key;
         tree.insert(key,key);
         num_val--;
     }
-    cout << ":: Initialized. Printing current tree...\n\n";
+    cout << "\n:: Initialized. Printing current tree...\n\n";
     tree.print();
     cout << "\n:: Entering interactive prompt...\n\n";
-    cout << usageMessage();
+    cout << usage();
     while (!quit)
     {
         cout << "> ";
@@ -51,6 +49,7 @@ int main() {
                 cout << "[DELETE]> ";
                 cin >> key;
                 tree.remove(key);
+				cout << "\n:: Delete operation complete. Printing current tree...\n\n";
                 tree.print();
                 break;
             case 'i':
@@ -61,6 +60,7 @@ int main() {
                     break;
                 }
                 tree.insert(key, key);
+                cout << "\n:: Insert operation complete. Printing current tree...\n\n";
                 tree.print();
                 break;
             case 'q':
@@ -68,14 +68,15 @@ int main() {
                 break;
             case 'r':
                 tree.destroyTree();
+                cout << ":: Tree destoryed.\n";
                 tree.print();
                 break;
             case '?':
-                cout << usageMessage();
+                cout << usage();
                 break;
             default:
                 cin.ignore(256, '\n');
-                cout << "invalid commands. \n\n" << usageMessage();
+                cout << "invalid commands. \n\n" << usage();
                 break;
         }
     }
