@@ -3,7 +3,7 @@ ARGS=-std=c++11 -g
 
 all : bptree
 
-bptree : Tree.o InternalNode.o LeafNode.o Node.o Printer.o Record.o main.o
+bptree : Tree.o InternalNode.o LeafNode.o Node.o Record.o main.o
 	$(CC) $(ARGS) $^ -o $@
 
 Tree.o: Tree.cpp Tree.h 
@@ -16,9 +16,6 @@ LeafNode.o: LeafNode.cpp LeafNode.h
 	$(CC) $(ARGS) -c $<
 
 Node.o: Node.cpp Node.h 
-	$(CC) $(ARGS) -c $<
-
-Printer.o: Printer.cpp Printer.h 
 	$(CC) $(ARGS) -c $<
 
 Record.o: Record.cpp Record.h 

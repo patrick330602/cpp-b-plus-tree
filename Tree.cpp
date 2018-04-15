@@ -208,7 +208,42 @@ LeafNode *Tree::findLeafNode(KeyType iKey, bool isPrinting)
 
 void Tree::print()
 {
-	printer.printTree(tRoot);
+	if (!tRoot)
+	{
+		cout << "Empty tree.\n";
+	}
+	else
+	{
+		queue<Node *> queue0;
+		queue<Node *> queue1;
+		auto currentRank = &queue0;
+		auto nextRank = &queue1;
+		currentRank->push(tRoot);
+		while (!currentRank->empty())
+		{
+			printCurrentRank(currentRank, nextRank);
+			auto tmp = currentRank;
+			currentRank = nextRank;
+			nextRank = tmp;
+		}
+	}
+}
+void Tree::printCurrentRank(queue<Node *> *currentRank, queue<Node *> *nextRank) const
+{
+	cout << "|";
+	while (!currentRank->empty())
+	{
+		Node *currentNode = currentRank->front();
+		cout << " " << currentNode->toString();
+		cout << " |";
+		if (!currentNode->isLeaf())
+		{
+			auto internalNode = static_cast<InternalNode *>(currentNode);
+			internalNode->queueUpChildren(nextRank);
+		}
+		currentRank->pop();
+	}
+	cout << endl;
 }
 
 void Tree::destroyTree()

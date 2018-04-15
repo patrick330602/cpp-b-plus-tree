@@ -3,8 +3,7 @@
 #include <iostream>
 #include <tuple>
 #include <vector>
-
-#include "Printer.h"
+#include <queue>
 using namespace std;
 using KeyType = int64_t;
 using ValueType = int64_t;
@@ -59,7 +58,7 @@ class Tree
 	void adjustRoot();
 	/*-- Other functions --*/
 	LeafNode *findLeafNode(KeyType iKey, bool isPrinting = false);
+	void printCurrentRank(queue<Node*>* currentRank, queue<Node*>* nextRank) const;
 	const int tOrder;
 	Node *tRoot;
-	Printer printer;
 };
