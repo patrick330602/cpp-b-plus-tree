@@ -1,13 +1,13 @@
 #include <sstream>
 #include "InternalNode.h"
 
-InternalNode::InternalNode(int Order) : Node(Order) {}
+InternalNode::InternalNode(int order) : Node(order) {}
 
-InternalNode::InternalNode(int Order, Node* Parent) : Node(Order, Parent) {}
+InternalNode::InternalNode(int order, Node* parent) : Node(order, parent) {}
 
 InternalNode::~InternalNode()
 {
-    for (auto mapping : fMappings) {
+    for (auto mapping : Mappings) {
         delete mapping.second;
     }
 }
@@ -19,7 +19,7 @@ bool InternalNode::isLeaf() const
 
 int InternalNode::size() const
 {
-    return static_cast<int>(fMappings.size());
+    return static_cast<int>(Mappings.size());
 }
 
 int InternalNode::minSize() const
@@ -36,151 +36,151 @@ int InternalNode::maxSize() const
     return order();
 }
 
-KeyType InternalNode::keyAt(int aIndex) const
+KeyType InternalNode::keyAt(int index) const
 {
-    return fMappings[aIndex].first;
+    return Mappings[index].first;
 }
 
-void InternalNode::setKeyAt(int aIndex, KeyType aKey)
+void InternalNode::setKeyAt(int index, KeyType key)
 {
-    fMappings[aIndex].first = aKey;
+    Mappings[index].first = key;
 }
 
 Node* InternalNode::firstChild() const
 {
-    return fMappings.front().second;
+    return Mappings.front().second;
 }
 
-void InternalNode::populateNewRoot(Node *aOldNode, KeyType aNewKey, Node *aNewNode)
+void InternalNode::populateNewRoot(Node *oldNode, KeyType newKey, Node *newNode)
 {
-    fMappings.push_back(make_pair(DUMMY_KEY, aOldNode));
-    fMappings.push_back(make_pair(aNewKey, aNewNode));
+    Mappings.push_back(make_pair(DUMMY_KEY, oldNode));
+    Mappings.push_back(make_pair(newKey, newNode));
 }
 
-int InternalNode::insertNodeAfter(Node *aOldNode, KeyType aNewKey, Node *aNewNode)
+int InternalNode::insertNodeAfter(Node *oldNode, KeyType newKey, Node *newNode)
 {
-    auto iter = fMappings.begin();
-    for (; iter != fMappings.end() && iter->second != aOldNode; ++iter);
-    fMappings.insert(iter + 1, make_pair(aNewKey, aNewNode));
+    auto iter = Mappings.begin();
+    for (; iter != Mappings.end() && iter->second != oldNode; ++iter);
+    Mappings.insert(iter + 1, make_pair(newKey, newNode));
     return size();
 }
 
-void InternalNode::remove(int aIndex)
+void InternalNode::remove(int index)
 {
-    fMappings.erase(fMappings.begin() + aIndex);
+    Mappings.erase(Mappings.begin() + index);
 }
 
 Node* InternalNode::removeAndReturnOnlyChild()
 {
-    Node* firstChild = fMappings.front().second;
-    fMappings.pop_back();
+    Node* firstChild = Mappings.front().second;
+    Mappings.pop_back();
     return firstChild;
 }
 
 KeyType InternalNode::replaceAndReturnFirstKey()
 {
-    KeyType newKey = fMappings[0].first;
-    fMappings[0].first = DUMMY_KEY;
+    KeyType newKey = Mappings[0].first;
+    Mappings[0].first = DUMMY_KEY;
     return newKey;
 }
 
-void InternalNode::moveHalfTo(InternalNode *aRecipient)
+void InternalNode::moveHalfTo(InternalNode *recipient)
 {
-    aRecipient->copyHalfFrom(fMappings);
-    size_t size = fMappings.size();
+    recipient->copyHalfFrom(Mappings);
+    size_t size = Mappings.size();
     for (size_t i = minSize()+1; i < size; ++i) {
-        fMappings.pop_back();
+        Mappings.pop_back();
     }
 }
 
-void InternalNode::copyHalfFrom(vector<MappingType> &aMappings)
+void InternalNode::copyHalfFrom(vector<MappingType> &mappings)
 {
-    for (size_t i = minSize()+1; i < aMappings.size(); ++i) {
-        aMappings[i].second->setParent(this);
-        fMappings.push_back(aMappings[i]);
+    for (size_t i = minSize()+1; i < mappings.size(); ++i) {
+        mappings[i].second->setParent(this);
+        Mappings.push_back(mappings[i]);
     }
 }
 
-void InternalNode::moveAllTo(InternalNode *aRecipient, int aIndexInParent)
+void InternalNode::moveAllTo(InternalNode *recipient, int indexInParent)
 {
-    fMappings[0].first = static_cast<InternalNode*>(parent())->keyAt(aIndexInParent);
-    aRecipient->copyAllFrom(fMappings);
-    fMappings.clear();
+    Mappings[0].first = static_cast<InternalNode*>(parent())->keyAt(indexInParent);
+    recipient->copyAllFrom(Mappings);
+    Mappings.clear();
 }
 
-void InternalNode::copyAllFrom(vector<MappingType> &aMappings)
+void InternalNode::copyAllFrom(vector<MappingType> &mappings)
 {
-    for (auto mapping : aMappings) {
+    for (auto mapping : mappings) {
         mapping.second->setParent(this);
-        fMappings.push_back(mapping);
+        Mappings.push_back(mapping);
     }
 }
 
-void InternalNode::moveFirstToEndOf(InternalNode *aRecipient)
+void InternalNode::moveFirstToEndOf(InternalNode *recipient)
 {
-    aRecipient->copyLastFrom(fMappings.front());
-    fMappings.erase(fMappings.begin());
-    static_cast<InternalNode*>(parent())->setKeyAt(1, fMappings.front().first);
+    recipient->copyLastFrom(Mappings.front());
+    Mappings.erase(Mappings.begin());
+    static_cast<InternalNode*>(parent())->setKeyAt(1, Mappings.front().first);
 }
 
-void InternalNode::copyLastFrom(MappingType aPair)
+void InternalNode::copyLastFrom(MappingType pair)
 {
-    fMappings.push_back(aPair);
-    fMappings.back().second->setParent(this);
+    Mappings.push_back(pair);
+    Mappings.back().second->setParent(this);
 }
 
-void InternalNode::moveLastToFrontOf(InternalNode *aRecipient, int aParentIndex)
+void InternalNode::moveLastToFrontOf(InternalNode *recipient, int parentIndex)
 {
-    aRecipient->copyFirstFrom(fMappings.back(), aParentIndex);
-    fMappings.pop_back();
+    recipient->copyFirstFrom(Mappings.back(), parentIndex);
+    Mappings.pop_back();
 }
 
-void InternalNode::copyFirstFrom(MappingType aPair, int aParentIndex)
+void InternalNode::copyFirstFrom(MappingType pair, int parentIndex)
 {
-    fMappings.front().first = static_cast<InternalNode*>(parent())->keyAt(aParentIndex);
-    fMappings.insert(fMappings.begin(), aPair);
-    fMappings.front().first = DUMMY_KEY;
-    fMappings.front().second->setParent(this);
-    static_cast<InternalNode*>(parent())->setKeyAt(aParentIndex, fMappings.front().first);
+    Mappings.front().first = static_cast<InternalNode*>(parent())->keyAt(parentIndex);
+    Mappings.insert(Mappings.begin(), pair);
+    Mappings.front().first = DUMMY_KEY;
+    Mappings.front().second->setParent(this);
+    static_cast<InternalNode*>(parent())->setKeyAt(parentIndex, Mappings.front().first);
 }
 
-Node* InternalNode::lookup(KeyType aKey) const
+Node* InternalNode::lookup(KeyType key) const
 {
-    auto locator = fMappings.begin();
-    auto end = fMappings.end();
-    while (locator != end && aKey >= locator->first) {
+    auto locator = Mappings.begin();
+    auto end = Mappings.end();
+    while (locator != end && key >= locator->first) {
         ++locator;
     }
-    // locator->first is now the least key k such that aKey < k.
-    // One before is the greatest key k such that aKey >= k.
+    // locator->first is now the least key k such that key < k.
+    // One before is the greatest key k such that key >= k.
     --locator;
     return locator->second;
 }
 
-int InternalNode::nodeIndex(Node *aNode) const
+int InternalNode::nodeIndex(Node *node) const
 {
     for (size_t i = 0; i < size(); ++i) {
-        if (fMappings[i].second == aNode) {
+        if (Mappings[i].second == node) {
             return static_cast<int>(i);
         }
     }
-    cout << "NodeNotFound: {" << aNode->toString() << ": " << toString() << "}\n";
+    cout << "NodeNotFound: {" << node->toString() << ": " << toString() << "}\n";
     throw;
 }
 
-Node* InternalNode::neighbor(int aIndex) const
+Node* InternalNode::neighbor(int index) const
 {
-    return fMappings[aIndex].second;
+    return Mappings[index].second;
 }
 
 string InternalNode::toString() const
 {
-    if (fMappings.empty()) {
+    if (Mappings.empty()) {
         return "";
     }
     ostringstream keyToTextConverter;
-    auto entry = fMappings.begin() + 1;
-    auto end = fMappings.end();
+    auto entry = Mappings.begin() + 1;
+    auto end = Mappings.end();
     bool first = true;
     while (entry != end) {
         if (first) {
@@ -194,9 +194,9 @@ string InternalNode::toString() const
     return keyToTextConverter.str();
 }
 
-void InternalNode::queueUpChildren(queue<Node *>* aQueue)
+void InternalNode::queueUpChildren(queue<Node *>* queue)
 {
-    for (auto mapping : fMappings) {
-        aQueue->push(mapping.second);
+    for (auto mapping : Mappings) {
+        queue->push(mapping.second);
     }
 }
